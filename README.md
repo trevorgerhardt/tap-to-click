@@ -9,7 +9,12 @@
 
 ## API
 
-   
+### capture([milliseconds])
+
+Just require and call the function. Double click timeout defaults to 500 ms. Pass in a number to change it.
+
+    var capture = require('tap-to-click');
+    capture(400);
 
 ## License
 

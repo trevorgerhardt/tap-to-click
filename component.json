@@ -1,0 +1,14 @@
+{
+  "name": "tap-to-click",
+  "repo": "trevorgerhardt/tap-to-click",
+  "description": "Convert all taps to clicks and mouse events.",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ]
+}

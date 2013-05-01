@@ -1,11 +1,17 @@
 
 # tap-to-click
 
-  Convert all taps to clicks and mouse events.
+  Convert all taps to clicks and mouse events. 
 
 ## Installation
 
+Install using component(1)
+
     $ component install trevorgerhardt/tap-to-click
+
+## Standalone
+
+Downdload and include `tapToClick.js` and run `tapToClick();`.
 
 ## API
 

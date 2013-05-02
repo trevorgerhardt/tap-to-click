@@ -40,9 +40,6 @@ function capture(customTimeout) {
  */
 
 function handler(event) {
-  event.preventDefault();
-  event.stopPropagation();
-
   var touch = event.changedTouches[0];
 
   switch(event.type) {
@@ -59,7 +56,12 @@ function handler(event) {
 
     // If the user wasn't moving
     if (!moving) {
+      // dispatch a click event
       dispatch('click', touch);
+
+      // prevent an automatic click from happening
+      event.preventDefault();
+      event.stopPropagation();
 
       // If there has been a recent click
       if (recentClick) {

@@ -91,7 +91,7 @@ function dispatch(type, touch) {
     , true // canBubble
     , true // cancelable
     , window // view
-    , 1 // detail (click count)
+    , (type === 'dblclick' ? 2 : 1) // detail (click count)
     , touch.screenX
     , touch.screenY
     , touch.clientX

@@ -1,5 +1,11 @@
 
 /**
+ * Expose `capture`
+ */
+
+module.exports = capture;
+
+/**
  * Is touch moving?
  */
 
@@ -18,17 +24,12 @@ var recentClick = false;
 var timeout = 500;
 
 /**
- * Expose `capture`
- */
-
-module.exports = capture;
-
-/**
  * Add listeners for all touch events
  */
 
 function capture(customTimeout) {
   timeout = customTimeout || timeout;
+
   document.addEventListener('touchstart', handler, true);
   document.addEventListener('touchmove', handler, true);
   document.addEventListener('touchend', handler, true);
@@ -40,39 +41,52 @@ function capture(customTimeout) {
  */
 
 function handler(event) {
-  var touch = event.changedTouches[0];
+  var touch = event.changedTouches[0]
+    , target = touch.target
+    , tagName = target.tagName.toLowerCase()
+    , type = event.type
+    , isInput = tagName === 'input' || tagName === 'textarea';
 
-  switch(event.type) {
+  switch(type) {
   case 'touchstart': 
     moving = false;
-    dispatch('mousedown', touch); 
+
+    if (!isInput) {
+      target.setActive();
+    }
+
+    dispatch('mousedown', touch);
     break;
   case 'touchmove':
     moving = true;
     dispatch('mousemove', touch); 
     break;        
   case 'touchend':
-    dispatch('mouseup', touch);
-
     // If the user wasn't moving
     if (!moving) {
+      event.preventDefault();
+
       // dispatch a click event
       dispatch('click', touch);
-
-      // prevent an automatic click from happening
-      event.preventDefault();
-      event.stopPropagation();
 
       // If there has been a recent click
       if (recentClick) {
         dispatch('dblclick', touch);
       }
+
       // Set the recent click to be true and set a timeout to disable it
       recentClick = true;
       setTimeout(function() {
         recentClick = false;
       }, timeout);
-    } 
+    } else {
+      dispatch('mouseup', touch);
+    }
+
+    // Focus if it's an input
+    if (isInput) {
+      target.focus();
+    }
     
     moving = false;
     break;

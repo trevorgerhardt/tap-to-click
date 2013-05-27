@@ -86,6 +86,8 @@ function handler(event) {
     // Focus if it's an input
     if (isInput) {
       target.focus();
+    } else {
+      target.blur();
     }
     
     moving = false;

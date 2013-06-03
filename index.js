@@ -1,5 +1,11 @@
 
 /**
+ * Dependencies
+ */
+
+var debug = require('debug')('tap-to-click')
+
+/**
  * Expose `capture`
  */
 
@@ -45,17 +51,17 @@ function handler(event) {
     , target = touch.target
     , tagName = target.tagName.toLowerCase()
     , type = event.type
-    , isInput = tagName === 'input' || tagName === 'textarea';
+    , isInput = tagName === 'input' || tagName === 'textarea' || tagName === 'select';
 
   switch(type) {
   case 'touchstart': 
     moving = false;
+    dispatch('mousedown', touch);
 
-    if (!isInput) {
+    if (!isInput && target.setActive) {
+      debug('setting target active');
       target.setActive();
     }
-
-    dispatch('mousedown', touch);
     break;
   case 'touchmove':
     moving = true;
@@ -92,6 +98,8 @@ function handler(event) {
     
     moving = false;
     break;
+  case 'touchcancel':
+    break;
   }
 }
 
@@ -100,8 +108,8 @@ function handler(event) {
  */
 
 function dispatch(type, touch) {
+  debug('dispatching - ' + type + ' - ' + touch.target.tagName);
   var simulatedEvent = document.createEvent('MouseEvent');
-  
   simulatedEvent.initMouseEvent(
       type
     , true // canBubble
@@ -119,6 +127,5 @@ function dispatch(type, touch) {
     , 0 // button
     , null // relatedTarget
   );
-
   touch.target.dispatchEvent(simulatedEvent);
 }

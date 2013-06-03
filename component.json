@@ -4,8 +4,9 @@
   "description": "Convert all taps to clicks and mouse events.",
   "version": "0.0.1",
   "keywords": [],
-  "dependencies": {},
-  "development": {},
+  "dependencies": {
+    "visionmedia/debug": "*"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": [

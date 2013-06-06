@@ -30,6 +30,12 @@ var recentClick = false;
 var timeout = 500;
 
 /**
+ * isAndroid?
+ */
+
+var isAndroid = window.device !== undefined && window.device.platform === 'Android';
+
+/**
  * Add listeners for all touch events
  */
 
@@ -53,6 +59,8 @@ function handler(event) {
     , type = event.type
     , isInput = tagName === 'input' || tagName === 'textarea' || tagName === 'select';
 
+  debug('handling: %s %s', type, tagName);
+
   switch(type) {
   case 'touchstart': 
     moving = false;
@@ -69,7 +77,7 @@ function handler(event) {
     break;        
   case 'touchend':
     // If the user wasn't moving
-    if (!moving) {
+    if (!moving && !isAndroid) {
       event.preventDefault();
 
       // dispatch a click event
@@ -108,7 +116,6 @@ function handler(event) {
  */
 
 function dispatch(type, touch) {
-  debug('dispatching - ' + type + ' - ' + touch.target.tagName);
   var simulatedEvent = document.createEvent('MouseEvent');
   simulatedEvent.initMouseEvent(
       type
@@ -127,5 +134,6 @@ function dispatch(type, touch) {
     , 0 // button
     , null // relatedTarget
   );
+  debug('dispatching: %s %s ', type, touch.target.tagName);
   touch.target.dispatchEvent(simulatedEvent);
 }
